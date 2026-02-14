@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Shalu 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#1a0015,#4a0033);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    overflow:hidden;
+}
+
+/* Floating Hearts */
+.heart{
+    position:fixed;
+    bottom:-10px;
+    color:#ff4d88;
+    animation:floatUp 6s linear infinite;
+}
+@keyframes floatUp{
+    0%{transform:translateY(0);opacity:1;}
+    100%{transform:translateY(-100vh);opacity:0;}
+}
+
+.container{
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(10px);
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+    width:90%;
+    max-width:500px;
+    display:none;
+    position:relative;
+}
+.container.active{display:block;}
+
+h1{color:#ff99cc;}
+
+.btn{
+    padding:10px 25px;
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+    background:#ff4d88;
+    color:white;
+    font-weight:600;
+    margin:5px;
+    transition:0.3s;
+}
+.btn:hover{transform:scale(1.05);}
+
+img{
+    width:100%;
+    max-height:400px;
+    object-fit:cover;
+    border-radius:15px;
+}
+
+/* YES Animation */
+@keyframes pop{
+    0%{transform:scale(0);}
+    100%{transform:scale(1);}
+}
+.pop{
+    animation:pop 0.5s ease-out;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+    <source src="palpal.mp3" type="audio/mp3">
+</audio>
+
+<script>
+// Floating Hearts
+for(let i=0;i<25;i++){
+    let heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="❤";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.animationDuration=(Math.random()*3+3)+"s";
+    heart.style.fontSize=(Math.random()*15+15)+"px";
+    document.body.appendChild(heart);
+}
+
+// Music autoplay after first click
+const music=document.getElementById("bgMusic");
+let started=false;
+document.body.addEventListener("click",()=>{
+    if(!started){
+        music.play();
+        started=true;
+    }
+});
+</script>
+
+<!-- Screen 1 -->
+<div class="container active" id="intro">
+    <h1>Hey Shalu ✨</h1>
+    <p>I have something special for you...</p>
+    <button class="btn" onclick="next('letter')">Start ❤️</button>
+</div>
+
+<!-- Screen 2 -->
+<div class="container" id="letter">
+    <h1>For You 💌</h1>
+    <p>
+        Dear Shalu,<br><br>
+        From the moment I met you, my world became brighter.  
+        Your smile is my favorite sight.  
+        <br><br>
+        I just want to ask you something important...
+    </p>
+    <button class="btn" onclick="next('proposal')">Next ➜</button>
+</div>
+
+<!-- Screen 3 -->
+<div class="container" id="proposal">
+    <h1>Will You Be My Valentine? 🌹</h1>
+    <button class="btn" onclick="yesClicked()">YES 😍</button>
+    <button class="btn" id="noBtn" 
+        onmouseover="dodgeButton()" 
+        ontouchstart="dodgeButton()">No 😢</button>
+</div>
+
+<!-- Screen 4 -->
+<div class="container" id="celebration">
+    <h1 id="yesText">She Said YES! 💖</h1>
+    <img src="Shalu.png" alt="Shalu">
+    <p>I’m the luckiest person in the world 💕</p>
+</div>
+
+<script>
+function next(id){
+    document.querySelectorAll('.container').forEach(c=>c.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+
+// NO Button Dodge
+let dodgeCount=0;
+function dodgeButton(){
+    const btn=document.getElementById("noBtn");
+    const questions=[
+        "Sure? 😢",
+        "Think Again 💭",
+        "Are You Serious?",
+        "You Wanna Hurt Me? 💔",
+        "Really?",
+        "Last Chance 😔",
+        "Please? 🥺",
+        "Soch Lo Zara 💞"
+    ];
+
+    btn.style.position="absolute";
+    btn.style.left=Math.random()*70+"%";
+    btn.style.top=Math.random()*70+"%";
+    btn.innerText=questions[dodgeCount%questions.length];
+    dodgeCount++;
+}
+
+// YES Click
+function yesClicked(){
+    next('celebration');
+    document.getElementById("yesText").classList.add("pop");
+    confetti();
+}
+
+// Confetti
+function confetti(){
+    for(let i=0;i<100;i++){
+        let div=document.createElement("div");
+        div.style.position="fixed";
+        div.style.width="8px";
+        div.style.height="8px";
+        div.style.backgroundColor=
+            "hsl("+Math.random()*360+",100%,50%)";
+        div.style.left=Math.random()*100+"vw";
+        div.style.top="-10px";
+        document.body.appendChild(div);
+
+        div.animate([
+            {transform:"translateY(0)"},
+            {transform:"translateY(100vh)"}
+        ],{
+            duration:Math.random()*2000+3000,
+            easing:"linear"
+        });
+    }
+}
+</script>
+
+</body>
+</html>
